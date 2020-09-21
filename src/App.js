@@ -5,7 +5,7 @@ import "react-input-range/lib/css/index.css";
 import MovieList from "./components/movieList";
 import Navigation from "./components/navigation";
 import FilterMenu from "./components/filterMenu";
-import { Button } from "react-bootstrap";
+import Pagination from "react-js-pagination";
 
 const apikey = process.env.REACT_APP_APIKEY;
 
@@ -14,13 +14,7 @@ function App() {
   let [pageTitle, setPageTitle] = useState("Now Playing Movies");
   let [rating, setRating] = useState({ min: 0, max: 10 });
   let [pageNumber, setPageNumber] = useState(1);
-
-  const loadMore = () => {
-    pageNumber++;
-    setPageNumber(pageNumber);
-    getLatestMovies(pageNumber);
-    setMovieList([...movieList]);
-  };
+  let [totalResults, setTotalResults] = useState(0);
 
   const getLatestMovies = async (pageNumber) => {
     let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apikey}&language=en-US&page=${pageNumber}`;
@@ -28,6 +22,7 @@ function App() {
     let data = await response.json();
     console.log(data);
     setMovieList(data.results);
+    setTotalResults(data.total_results);
     setPageTitle("Now Playing Movies");
   };
 
@@ -37,6 +32,7 @@ function App() {
     let data = await response.json();
     console.log(data);
     setMovieList(data.results);
+    setTotalResults(data.total_results);
     setPageTitle("Popular Movies");
   };
 
@@ -46,6 +42,7 @@ function App() {
     let data = await response.json();
     console.log(data);
     setMovieList(data.results);
+    setTotalResults(data.total_results);
     setPageTitle("Upcoming Movies");
   };
 
@@ -55,14 +52,18 @@ function App() {
     let data = await response.json();
     console.log(data);
     setMovieList(data.results);
+    setTotalResults(data.total_results);
     setPageTitle("Top Rated Movies");
   };
 
   const searchByKeyword = async (keyword) => {
-    let url = `https://api.themoviedb.org/3/search/movie?api_key=${apikey}&query=${keyword}`;
-    let response = await fetch(url);
-    let data = await response.json();
-    setMovieList(data.results);
+    if (keyword !== "") {
+      let url = `https://api.themoviedb.org/3/search/movie?api_key=${apikey}&query=${keyword}`;
+      let response = await fetch(url);
+      let data = await response.json();
+      setMovieList(data.results);
+      setTotalResults(data.total_results);
+    }
   };
 
   let filterByRating = (rating) => {
@@ -79,7 +80,7 @@ function App() {
     let sortedList;
     if (sortOrder === "ascending") {
       sortedList = movieList.sort((a, b) => a.vote_average - b.vote_average);
-    } else {
+    } else if (sortOrder === "descending") {
       sortedList = movieList.sort((a, b) => b.vote_average - a.vote_average);
     }
     setMovieList([...sortedList]);
@@ -89,14 +90,14 @@ function App() {
     let sortedList;
     if (sortOrder === "ascending") {
       sortedList = movieList.sort((a, b) => a.popularity - b.popularity);
-    } else {
+    } else if (sortOrder === "descending") {
       sortedList = movieList.sort((a, b) => b.popularity - a.popularity);
     }
     setMovieList([...sortedList]);
   };
 
   useEffect(() => {
-    getLatestMovies(pageNumber);
+    getLatestMovies(1);
   }, []);
 
   return (
@@ -118,9 +119,18 @@ function App() {
             rating={rating}
           />
           <MovieList list={movieList} />
-          <Button variant="primary" size="lg" onClick={() => loadMore()}>
-            Load More
-          </Button>
+          <Pagination
+            activePage={pageNumber}
+            itemsCountPerPage={20}
+            totalItemsCount={totalResults}
+            pageRangeDisplayed={5}
+            onChange={(page) => {
+              setPageNumber(page);
+              getLatestMovies(page);
+            }}
+            itemClass="page-item"
+            linkClass="page-link"
+          />
         </div>
       </div>
     </div>
