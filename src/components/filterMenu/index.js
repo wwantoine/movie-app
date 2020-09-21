@@ -10,7 +10,7 @@ const FilterMenu = ({
   rating,
 }) => {
   return (
-    <div className="col-md-3">
+    <div>
       <Dropdown style={{ width: "100%" }}>
         <Dropdown.Toggle variant="primary" style={{ width: "100%" }}>
           Sort By
@@ -44,17 +44,15 @@ const FilterMenu = ({
         </Dropdown.Menu>
       </Dropdown>
 
-      <div>
-        <div className={styles.filter_slider}>
-          <div>Filter By Rating:</div>
-          <div style={{ margin: "0px 10px" }}>
-            <InputRange
-              maxValue={10}
-              minValue={0}
-              value={rating}
-              onChange={(rating) => filterByRating(rating)}
-            />
-          </div>
+      <div className={styles.filter_slider}>
+        <div>Filter By Rating:</div>
+        <div style={{ margin: "0px 10px" }}>
+          <InputRange
+            maxValue={10}
+            minValue={0}
+            value={rating}
+            onChange={(rating) => filterByRating(rating)}
+          />
         </div>
       </div>
     </div>

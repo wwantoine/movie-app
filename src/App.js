@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
+import { Col, Container, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-input-range/lib/css/index.css";
+import "./App.css";
 import MovieList from "./components/movieList";
 import Navigation from "./components/navigation";
 import FilterMenu from "./components/filterMenu";
@@ -10,11 +11,13 @@ import Pagination from "react-js-pagination";
 const apikey = process.env.REACT_APP_APIKEY;
 
 function App() {
+  let [unfilteredList, setUnfilteredList] = useState([]);
   let [movieList, setMovieList] = useState([]);
   let [pageTitle, setPageTitle] = useState("Now Playing Movies");
   let [rating, setRating] = useState({ min: 0, max: 10 });
   let [pageNumber, setPageNumber] = useState(1);
   let [totalResults, setTotalResults] = useState(0);
+  let [genreList, setGenreList] = useState([]);
 
   const getLatestMovies = async (pageNumber) => {
     let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apikey}&language=en-US&page=${pageNumber}`;
@@ -23,6 +26,7 @@ function App() {
     console.log(data);
     setMovieList(data.results);
     setTotalResults(data.total_results);
+    setUnfilteredList(data.results);
     setPageTitle("Now Playing Movies");
   };
 
@@ -33,6 +37,7 @@ function App() {
     console.log(data);
     setMovieList(data.results);
     setTotalResults(data.total_results);
+    setUnfilteredList(data.results);
     setPageTitle("Popular Movies");
   };
 
@@ -43,6 +48,7 @@ function App() {
     console.log(data);
     setMovieList(data.results);
     setTotalResults(data.total_results);
+    setUnfilteredList(data.results);
     setPageTitle("Upcoming Movies");
   };
 
@@ -53,6 +59,7 @@ function App() {
     console.log(data);
     setMovieList(data.results);
     setTotalResults(data.total_results);
+    setUnfilteredList(data.results);
     setPageTitle("Top Rated Movies");
   };
 
@@ -63,12 +70,13 @@ function App() {
       let data = await response.json();
       setMovieList(data.results);
       setTotalResults(data.total_results);
+      setUnfilteredList(data.results);
     }
   };
 
-  let filterByRating = (rating) => {
+  const filterByRating = (rating) => {
     setRating(rating);
-    let filteredList = movieList.filter((movie) => {
+    let filteredList = unfilteredList.filter((movie) => {
       return (
         movie.vote_average >= rating.min && movie.vote_average <= rating.max
       );
@@ -96,7 +104,16 @@ function App() {
     setMovieList([...sortedList]);
   };
 
+  const getGenreList = async () => {
+    let url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apikey}&language=en-US`;
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log(data);
+    setGenreList(data.genres);
+  };
+
   useEffect(() => {
+    getGenreList();
     getLatestMovies(1);
   }, []);
 
@@ -109,30 +126,35 @@ function App() {
         getUpcomingMovies={getUpcomingMovies}
         getTopRatedMovies={getTopRatedMovies}
       />
-      <div className="container my-2">
+      <Container className="my-2">
         <h1>{pageTitle}</h1>
-        <div className="d.flex row no-gutters my-4">
-          <FilterMenu
-            sortByRating={sortByRating}
-            sortByPopular={sortByPopular}
-            filterByRating={filterByRating}
-            rating={rating}
-          />
-          <MovieList list={movieList} />
-          <Pagination
-            activePage={pageNumber}
-            itemsCountPerPage={20}
-            totalItemsCount={totalResults}
-            pageRangeDisplayed={5}
-            onChange={(page) => {
-              setPageNumber(page);
-              getLatestMovies(page);
-            }}
-            itemClass="page-item"
-            linkClass="page-link"
-          />
-        </div>
-      </div>
+        <Row noGutters={true} className="d.flex my-4">
+          <Col md={3}>
+            <FilterMenu
+              sortByRating={sortByRating}
+              sortByPopular={sortByPopular}
+              filterByRating={filterByRating}
+              rating={rating}
+            />
+          </Col>
+          <Col md={9} sm={12}>
+            <MovieList list={movieList} genreList={genreList} />
+            <Pagination
+              activePage={pageNumber}
+              itemsCountPerPage={20}
+              totalItemsCount={totalResults}
+              pageRangeDisplayed={5}
+              onChange={(page) => {
+                setPageNumber(page);
+                getLatestMovies(page);
+              }}
+              itemClass="page-item"
+              linkClass="page-link"
+              style={{ justifyContent: "center" }}
+            />
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }

@@ -1,11 +1,11 @@
 import React from "react";
 import MovieCard from "../movieCard";
 
-const movieList = ({ list }) => {
+const movieList = ({ list, genreList }) => {
   return (
-    <div className="col-md-9 col-sm-12 d-flex flex-wrap justify-content-around px-2">
+    <div className="d-flex flex-wrap justify-content-around px-2">
       {list.map((item) => {
-        return <MovieCard movie={item} />;
+        return <MovieCard movie={item} genreList={genreList} />;
       })}
     </div>
   );

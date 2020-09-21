@@ -1,5 +1,12 @@
 import React from "react";
-import { Navbar, Form, FormControl, Button, Nav } from "react-bootstrap";
+import {
+  Navbar,
+  Form,
+  FormControl,
+  Button,
+  Nav,
+  Container,
+} from "react-bootstrap";
 
 const Navigation = ({
   searchByKeyword,
@@ -12,7 +19,7 @@ const Navigation = ({
   return (
     <div>
       <Navbar bg="primary" expand="md" variant="dark">
-        <div className="container">
+        <Container>
           <Navbar.Brand href="#home">KODb</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -51,7 +58,7 @@ const Navigation = ({
               </Button>
             </Form>
           </Navbar.Collapse>
-        </div>
+        </Container>
       </Navbar>
     </div>
   );
