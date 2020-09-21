@@ -15,6 +15,19 @@ function App() {
   let [rating, setRating] = useState({ min: 0, max: 10 });
   let [pageNumber, setPageNumber] = useState(1);
   let [totalResults, setTotalResults] = useState(0);
+  let [show, setShow] = useState(false);
+  let [movieKey, setMovieKey] = useState("");
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const getVideo = async (movieId) => {
+    let url = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apikey}&language=en-US`;
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log("video", data.results[0].key);
+    setMovieKey(data.results[0].key);
+  };
 
   const getLatestMovies = async (pageNumber) => {
     let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apikey}&language=en-US&page=${pageNumber}`;
@@ -130,7 +143,14 @@ function App() {
             rating={rating}
             filterByGenre={filterByGenre}
           />
-          <MovieList list={movieList} />
+          <MovieList
+            list={movieList}
+            show={show}
+            handleClose={handleClose}
+            handleShow={handleShow}
+            getVideo={getVideo}
+            movieKey={movieKey}
+          />
           <Pagination
             activePage={pageNumber}
             itemsCountPerPage={20}
