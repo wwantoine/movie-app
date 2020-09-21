@@ -1,49 +1,72 @@
-.whole_card{
-    width: 221px;
-    margin-bottom: 2rem;
-    border-radius: 1rem;
+.whole_card {
+  width: 221px;
+  margin-bottom: 2rem;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lower_card {
+  padding: 0.75rem;
 }
 
 .img__wrap {
-    position: relative;
-    border-radius: 1rem 1rem 0rem 0rem;
-  }
-  
-  .img__description_layer {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-radius: 1rem 1rem 0rem 0rem;
-    background: rgba(36, 62, 206, 0.6);
-    color: #fff;
-    visibility: hidden;
-    opacity: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-    /* transition effect */
-    transition: opacity .2s, visibility .2s;
-  }
-  
-  .img__wrap:hover .img__description_layer {
-    visibility: visible;
-    opacity: 1;
-  }
-  
-  .img__description {
-    transition: .2s;
-    transform: translateY(1em);
-  }
-  
-  .img__wrap:hover .img__description {
-    transform: translateY(0);
-  }
+  position: relative;
+  border-radius: 1rem 1rem 0rem 0rem;
+}
 
-  .img_size{
-      height: 330px;
-      width: 220px;
-      border-radius: 1rem 1rem 0rem 0rem;
-  }
+.img__description_layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 1rem 1rem 0rem 0rem;
+  background: rgba(36, 62, 206, 0.6);
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* transition effect */
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.img__wrap:hover .img__description_layer {
+  visibility: visible;
+  opacity: 1;
+}
+
+.img__description {
+  transition: 0.3s;
+  transform: translateY(1em);
+  margin: 0rem 0.5rem;
+  font-size: smaller;
+  text-align: justify;
+  font-weight: 600;
+}
+
+.img__wrap:hover .img__description {
+  transform: translateY(0);
+}
+
+.img_size {
+  height: 330px;
+  width: 220px;
+  border-radius: 1rem 1rem 0rem 0rem;
+}
+
+.movie_title {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.movie_rating {
+  font-size: larger;
+  font-weight: bold;
+  color: red;
+  flex: 0 0 16.666667%;
+  max-width: 16.666667%;
+  align-content: center;
+}
