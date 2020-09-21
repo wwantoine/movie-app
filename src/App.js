@@ -117,12 +117,10 @@ function App() {
             filterByRating={filterByRating}
             rating={rating}
           />
-          <div>
-            <MovieList list={movieList} />
-            <Button variant="primary" size="lg" onClick={() => loadMore()}>
-              Load More
-            </Button>
-          </div>
+          <MovieList list={movieList} />
+          <Button variant="primary" size="lg" onClick={() => loadMore()}>
+            Load More
+          </Button>
         </div>
       </div>
     </div>
