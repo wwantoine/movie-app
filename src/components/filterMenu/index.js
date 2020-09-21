@@ -8,6 +8,7 @@ const FilterMenu = ({
   sortByPopular,
   filterByRating,
   rating,
+  filterByGenre,
 }) => {
   return (
     <div className="col-md-3">
@@ -44,7 +45,7 @@ const FilterMenu = ({
         </Dropdown.Menu>
       </Dropdown>
 
-      <div>
+      <div style={{ marginBottom: "20px" }}>
         <div className={styles.filter_slider}>
           <div>Filter By Rating:</div>
           <div style={{ margin: "0px 10px" }}>
@@ -57,6 +58,52 @@ const FilterMenu = ({
           </div>
         </div>
       </div>
+
+      <Dropdown style={{ width: "100%" }}>
+        <Dropdown.Toggle variant="primary" style={{ width: "100%" }}>
+          Sort By Genre
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu style={{ width: "100%" }}>
+          <Dropdown.Item
+            href="#/sortByRating-desc"
+            onClick={() => filterByGenre(28)}
+          >
+            Action
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="#/sortByRating-desc"
+            onClick={() => filterByGenre(12)}
+          >
+            Adventure
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="#/sortByRating-desc"
+            onClick={() => filterByGenre(16)}
+          >
+            Animation
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="#/sortByRating-desc"
+            onClick={() => filterByGenre(35)}
+          >
+            Comedy
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            href="#/sortByRating-desc"
+            onClick={() => filterByGenre(80)}
+          >
+            Crime
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="#/sortByRating-desc"
+            onClick={() => filterByGenre(99)}
+          >
+            Documentary
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
     </div>
   );
 };

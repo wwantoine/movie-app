@@ -66,6 +66,17 @@ function App() {
     }
   };
 
+  const filterByGenre = async (genreName) => {
+    let url = `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&with_genres=${genreName}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`;
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log("genre", data);
+    setMovieList(data.results);
+    // if (data.with_genres.includes("genreName")) {
+    //   setMovieList(data.results);
+    // }
+  };
+
   let filterByRating = (rating) => {
     setRating(rating);
     let filteredList = movieList.filter((movie) => {
@@ -117,6 +128,7 @@ function App() {
             sortByPopular={sortByPopular}
             filterByRating={filterByRating}
             rating={rating}
+            filterByGenre={filterByGenre}
           />
           <MovieList list={movieList} />
           <Pagination
