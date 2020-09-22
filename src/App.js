@@ -132,7 +132,7 @@ function App() {
     let url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apikey}&language=en-US`;
     let response = await fetch(url);
     let data = await response.json();
-    console.log(data);
+    console.log("genre list", data.genres);
     setGenreList(data.genres);
   };
 
@@ -156,22 +156,23 @@ function App() {
         <Row noGutters={true} className="d.flex my-4">
           <Col md={3}>
             <FilterMenu
-            sortByRating={sortByRating}
-            sortByPopular={sortByPopular}
-            filterByRating={filterByRating}
-            rating={rating}
-            filterByGenre={filterByGenre}
-          />
+              sortByRating={sortByRating}
+              sortByPopular={sortByPopular}
+              filterByRating={filterByRating}
+              rating={rating}
+              filterByGenre={filterByGenre}
+            />
           </Col>
           <Col md={9} sm={12}>
             <MovieList
-            list={movieList}
-            show={show}
-            handleClose={handleClose}
-            handleShow={handleShow}
-            getVideo={getVideo}
-            movieKey={movieKey}
-          />
+              list={movieList}
+              show={show}
+              handleClose={handleClose}
+              handleShow={handleShow}
+              getVideo={getVideo}
+              movieKey={movieKey}
+              genreList={genreList}
+            />
             <Pagination
               activePage={pageNumber}
               itemsCountPerPage={20}
