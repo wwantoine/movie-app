@@ -17,7 +17,20 @@ function App() {
   let [rating, setRating] = useState({ min: 0, max: 10 });
   let [pageNumber, setPageNumber] = useState(1);
   let [totalResults, setTotalResults] = useState(0);
+  let [show, setShow] = useState(false);
+  let [movieKey, setMovieKey] = useState("");
   let [genreList, setGenreList] = useState([]);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const getVideo = async (movieId) => {
+    let url = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apikey}&language=en-US`;
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log("video", data.results[0].key);
+    setMovieKey(data.results[0].key);
+  };
 
   const getLatestMovies = async (pageNumber) => {
     let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apikey}&language=en-US&page=${pageNumber}`;
@@ -74,7 +87,18 @@ function App() {
     }
   };
 
-  const filterByRating = (rating) => {
+  const filterByGenre = async (genreName) => {
+    let url = `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&with_genres=${genreName}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`;
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log("genre", data);
+    setMovieList(data.results);
+    // if (data.with_genres.includes("genreName")) {
+    //   setMovieList(data.results);
+    // }
+  };
+
+  let filterByRating = (rating) => {
     setRating(rating);
     let filteredList = unfilteredList.filter((movie) => {
       return (
@@ -128,17 +152,26 @@ function App() {
       />
       <Container className="my-2">
         <h1>{pageTitle}</h1>
+
         <Row noGutters={true} className="d.flex my-4">
           <Col md={3}>
             <FilterMenu
-              sortByRating={sortByRating}
-              sortByPopular={sortByPopular}
-              filterByRating={filterByRating}
-              rating={rating}
-            />
+            sortByRating={sortByRating}
+            sortByPopular={sortByPopular}
+            filterByRating={filterByRating}
+            rating={rating}
+            filterByGenre={filterByGenre}
+          />
           </Col>
           <Col md={9} sm={12}>
-            <MovieList list={movieList} genreList={genreList} />
+            <MovieList
+            list={movieList}
+            show={show}
+            handleClose={handleClose}
+            handleShow={handleShow}
+            getVideo={getVideo}
+            movieKey={movieKey}
+          />
             <Pagination
               activePage={pageNumber}
               itemsCountPerPage={20}
