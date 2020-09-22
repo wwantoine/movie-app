@@ -11,7 +11,7 @@ const FilterMenu = ({
   filterByGenre,
 }) => {
   return (
-    <div className="col-md-3">
+    <div>
       <Dropdown style={{ width: "100%" }}>
         <Dropdown.Toggle variant="primary" style={{ width: "100%" }}>
           Sort By
@@ -44,6 +44,7 @@ const FilterMenu = ({
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
+
 
       <div style={{ marginBottom: "20px" }}>
         <div className={styles.filter_slider}>
